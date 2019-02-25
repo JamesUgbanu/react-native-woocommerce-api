@@ -1,3 +1,4 @@
+![GitHub package.json version](https://img.shields.io/github/package-json/v/techneplus/react-native-woocommerce-api.svg)
 # react-native-woocommerce-api
 Connects react Native to the WooCommerce API
 
