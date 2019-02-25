@@ -1,0 +1,97 @@
+{
+  "name": "react-native-woocommerce-api",
+  "version": "1.0.1",
+  "description": "Connects react Native to the WooCommerce API",
+  "main": "lib/react-native-woocommerce-api.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/techneplus/react-native-woocommerce-api.git"
+  },
+  "keywords": [
+    "woocommerce",
+    "react native",
+    "react",
+    "native",
+    "android",
+    "ios",
+    "mobile",
+    "woocom",
+    "wordpress",
+    "permalink",
+    "wordpress-permailink",
+    "wordpresspermailink",
+    "rest",
+    "REST",
+    "woocommerce-rest",
+    "woocommercerest",
+    "woocommerce-REST",
+    "wordpress-rest",
+    "wordpress-REST",
+    "wordpressrest",
+    "wordpressREST",
+    "wordpress-rest-api",
+    "wordpress-REST-api",
+    "wordpress-REST-API",
+    "wordpressrestapi",
+    "wordpressRESTapi",
+    "wordpressRESTAPI",
+    "woocommerce-api",
+    "woocommerceapi",
+    "woo",
+    "crystalwebpro",
+    "techneplus",
+    "api",
+    "API",
+    "wc",
+    "commerce",
+    "wordpress commerce",
+    "wordpress-commerce",
+    "wordpresscommerce",
+    "wordpress woocommerce",
+    "wordpress-woocommerce",
+    "wordpress-woocommerce-api",
+    "wordpress woocommerce api",
+    "wordpresswoocommerceapi",
+    "wordpress shopping cart",
+    "wordpress-shopping-cart",
+    "wordpressshoppingcart"
+  ],
+  "author": {
+    "name": "james Ugbanu",
+    "email": "jamesugbanu@gmail.com",
+    "url": "https://www.facebook.com/cemargo"
+  },
+  "bugs": {
+    "url": "https://github.com/techneplus/react-native-woocommerce-api/issues"
+  },
+  "homepage": "https://github.com/techneplus/react-native-woocommerce-api",
+  "devDependencies": {},
+  "dependencies": {
+    "oauth-1.0a": "^2.2.5",
+    "crypto-js": "^3.1.9-1"
+  },
+  "_id": "react-native-woocommerce-api@1.0.6",
+  "_shasum": "",
+  "_from": "node_modules\\react-native-woocommerce-api",
+  "_npmUser": {
+    "name": "james ugbanu",
+    "email": "jamesugbanu@gmail.com"
+  },
+  "gitHead": "",
+  "dist": {
+    "shasum": "",
+    "tarball": ""
+  },
+  "maintainers": [
+    {
+      "name": "james ugbanu",
+      "email": "jamesugbanu@gmail.com"
+    }
+  ],
+  "directories": {},
+  "_resolved": "file:node_modules\\react-native-woocommerce-api"
+}
