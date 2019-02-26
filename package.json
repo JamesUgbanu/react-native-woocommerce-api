@@ -1,6 +1,6 @@
 {
   "name": "react-native-woocommerce-api",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Connects react Native to the WooCommerce API",
   "main": "lib/react-native-woocommerce-api.js",
   "license": "MIT",
@@ -71,8 +71,8 @@
   "homepage": "https://github.com/techneplus/react-native-woocommerce-api",
   "devDependencies": {},
   "dependencies": {
-    "oauth-1.0a": "^2.2.5",
-    "crypto-js": "^3.1.9-1"
+    "crypto-js": "^3.1.8",
+    "oauth-1.0a": "*"
   },
   "_id": "react-native-woocommerce-api@1.0.6",
   "_shasum": "",
