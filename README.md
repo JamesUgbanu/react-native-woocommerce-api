@@ -1,6 +1,6 @@
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/techneplus/react-native-woocommerce-api.svg)
 # react-native-woocommerce-api
-Connects react Native to the WooCommerce API
+A wrappper that connects react Native to the WooCommerce API
 
 ## Installation
 
@@ -14,10 +14,10 @@ npm install react-native-woocommerce-api --save
 
 You will need a consumer key and consumer secret to call your store's WooCommerce API. You can find instructions [here](https://docs.woocommerce.com/document/woocommerce-rest-api/)
 
-Include the 'react-native-woocommerce-ap' module within your script and instantiate it with a config:
+Include the 'react-native-woocommerce-api' module within your script and instantiate it with a config:
 
 ```javascript
-var WooCommerceAPI = require('react-native-woocommerce-api');
+import WooCommerceAPI from 'react-native-woocommerce-api';
 
 var WooCommerceAPI = new WooCommerceAPI({
   url: 'https://yourstore.com', // Your store URL
