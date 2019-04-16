@@ -46,8 +46,7 @@ WooCommerceAPI.get('products',{
     })
     .catch(error => {
        // error will return any errors that occur
-      })
-});
+    })
 ```
 
 ### POST
@@ -56,7 +55,6 @@ For this example you have a [Order object](http://woocommerce.github.io/woocomme
 
 ```javascript
 WooCommerceAPI.post('orders', orderObject, {
-
   })
   .then(data => {
    // data will contain the body content from the request
@@ -64,14 +62,12 @@ WooCommerceAPI.post('orders', orderObject, {
   .catch(error => {
       // error will return any errors that occur
   })
-});
 ```
 
 ### PUT
 
 ```javascript
-
- WooCommerceAPI.put('/orders/1', orderUpdate, {
+WooCommerceAPI.put('/orders/1', orderUpdate, {
   })
   .then(data => {
      // data will contain the body content from the request
@@ -79,8 +75,6 @@ WooCommerceAPI.post('orders', orderObject, {
     .catch(error => {
       // error will return any errors that occur
   })
-  
-});
 ```
 
 ### DELETE
@@ -94,7 +88,6 @@ NPMWooCommerceAPI.delete('orders/1234', {
   .catch(error => {
   // error will return any errors that occur
   })
-});
 ```
 
 ## Testing
