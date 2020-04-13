@@ -80,7 +80,7 @@ WooCommerceAPI.put('/orders/1', orderUpdate, {
 ### DELETE
 
 ```javascript
-NPMWooCommerceAPI.delete('orders/1234', {
+WooCommerceAPI.delete('orders/1234', {
   })
   .then(data => {
    // data will contain the body content from the request
