@@ -8,9 +8,8 @@
     "lint": "jshint .",
     "pretest": "npm run-script lint",
     "test": "mocha",
-    "test-cov": "istanbul cover ./node_modules/.bin/_mocha test.js",
-    "posttest": "istanbul check-coverage --statements 85 --branches 70 --functions 100 --lines 90 && rm -rf coverage"
-  },
+    "test-cov": "istanbul cover ./node_modules/.bin/_mocha test.js"
+   },
   "repository": {
     "type": "git",
     "url": "https://github.com/techneplus/react-native-woocommerce-api.git"
