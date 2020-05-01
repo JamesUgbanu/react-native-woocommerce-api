@@ -1,0 +1,25 @@
+{
+    "boss": true,
+    "curly": true,
+    "eqeqeq": true,
+    "eqnull": true,
+    "expr": true,
+    "immed": true,
+    "noarg": true,
+    "onevar": true,
+    "quotmark": "single",
+    "trailing": true,
+    "undef": true,
+    "unused": true,
+    "node": true,
+    "browser": false,
+    "esversion": 6,
+    "predef": [
+      "describe",
+      "it",
+      "before",
+      "beforeEach",
+      "after",
+      "afterEach"
+    ]
+  }
