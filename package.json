@@ -9,7 +9,7 @@
     "pretest": "npm run-script lint",
     "test": "mocha",
     "test-cov": "istanbul cover ./node_modules/.bin/_mocha test.js"
-   },
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/techneplus/react-native-woocommerce-api.git"
@@ -81,7 +81,7 @@
   },
   "dependencies": {
     "crypto-js": "^3.1.8",
-    "needle": "^2.4.1",
+    "node-fetch": "^2.6.0",
     "oauth-1.0a": "^2.2.5"
   },
   "_id": "react-native-woocommerce-api@1.0.11",

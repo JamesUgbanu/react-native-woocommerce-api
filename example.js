@@ -10,32 +10,10 @@ var WooCommerceAPI = new WooCommerceAPI({
   queryStringAuth: true
 });
 
- 	// GET example
-WooCommerceAPI.get('customers', function(err, data, res) {
-  console.log(res);
-});
-
-// POST example
-// WooCommerceAPI.post('products', {
-//   product: {
-//     title: 'Premium Quality',
-//     type: 'simple',
-//     regular_price: '21.99'
-//   }
-// }, function(err, data, res) {
-//   console.log(res);
-// });
-
-// PUT example
-// WooCommerceAPI.put('orders/123', {
-//   order: {
-//     status: 'completed'
-//   }
-// }, function(err, data, res) {
-//   console.log(res);
-// });
-
-// Delete example
-// WooCommerceAPI.delete('coupons/123', function(err, data, res) {
-//   console.log(res);
-// });
+ 	WooCommerceAPI.get('products')
+          .then(data => {
+          	console.log(data);
+          })
+          .catch(error => {
+          	console.log(error);
+          });
