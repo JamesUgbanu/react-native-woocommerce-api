@@ -58,6 +58,7 @@ WooCommerceAPI.post('products', {
     title: 'Premium Quality',
     type: 'simple',
     regular_price: '21.99'
+    }
   })
   .then(data => {
           	console.log(data);
@@ -73,6 +74,7 @@ WooCommerceAPI.post('products', {
 WooCommerceAPI.put('orders/123', {
   order: {
     status: 'completed'
+  }
   })
   .then(data => {
           	console.log(data);
