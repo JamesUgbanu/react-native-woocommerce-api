@@ -39,14 +39,10 @@ Your WooCommerce API can be called once the WooCommerceAPI object has been insta
 ### GET
 
 ```javascript
-WooCommerceAPI.get('products',{
-    })
-    .then(data => {
-      // data will contain the body content from the request
-    })
-    .catch(error => {
-       // error will return any errors that occur
-    })
+WooCommerceAPI.get('customers', function(err, data) {
+  console.log(data);
+});
+
 ```
 
 ### POST
@@ -54,40 +50,35 @@ WooCommerceAPI.get('products',{
 For this example you have a [Order object](http://woocommerce.github.io/woocommerce-rest-api-docs/#create-an-order).
 
 ```javascript
-WooCommerceAPI.post('orders', orderObject, {
-  })
-  .then(data => {
-   // data will contain the body content from the request
-  })
-  .catch(error => {
-      // error will return any errors that occur
-  })
+WooCommerceAPI.post('products', {
+  product: {
+    title: 'Premium Quality',
+    type: 'simple',
+    regular_price: '21.99'
+  }
+}, function(err, data, res) {
+  console.log(res);
+});
 ```
 
 ### PUT
 
 ```javascript
-WooCommerceAPI.put('/orders/1', orderUpdate, {
-  })
-  .then(data => {
-     // data will contain the body content from the request
-  })
-    .catch(error => {
-      // error will return any errors that occur
-  })
+WooCommerceAPI.put('orders/123', {
+  order: {
+    status: 'completed'
+  }
+}, function(err, data) {
+  console.log(res);
+});
 ```
 
 ### DELETE
 
 ```javascript
-WooCommerceAPI.delete('orders/1234', {
-  })
-  .then(data => {
-   // data will contain the body content from the request
-  })
-  .catch(error => {
-  // error will return any errors that occur
-  })
+WooCommerceAPI.delete('coupons/123', function(err, data) {
+  console.log(res);
+});
 ```
 
 ## Testing

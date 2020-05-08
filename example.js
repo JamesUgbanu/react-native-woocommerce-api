@@ -10,11 +10,10 @@ var WooCommerceAPI = new WooCommerceAPI({
   queryStringAuth: true
 });
 
- 	WooCommerceAPI.get('products', {
-        })
+ 	WooCommerceAPI.get('products')
           .then(data => {
           	console.log(data);
           })
           .catch(error => {
-          	console.log(error)
-          })
+          	console.log(error);
+          });
