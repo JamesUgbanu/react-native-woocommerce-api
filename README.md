@@ -1,4 +1,4 @@
-![GitHub package.json version](https://img.shields.io/github/package-json/v/techneplus/react-native-woocommerce-api.svg)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/techneplus/react-native-woocommerce-api.svg)[![Build Status](https://travis-ci.org/JamesUgbanu/react-native-woocommerce-api.svg?branch=master)](https://travis-ci.org/JamesUgbanu/react-native-woocommerce-api)
 # react-native-woocommerce-api
 A wrappper that connects react Native to the WooCommerce API
 
@@ -39,10 +39,13 @@ Your WooCommerce API can be called once the WooCommerceAPI object has been insta
 ### GET
 
 ```javascript
-WooCommerceAPI.get('customers', function(err, data) {
-  console.log(data);
-});
-
+WooCommerceAPI.get('products')
+          .then(data => {
+          	console.log(data);
+          })
+          .catch(error => {
+          	console.log(error);
+          });
 ```
 
 ### POST
@@ -55,10 +58,13 @@ WooCommerceAPI.post('products', {
     title: 'Premium Quality',
     type: 'simple',
     regular_price: '21.99'
-  }
-}, function(err, data, res) {
-  console.log(res);
-});
+  })
+  .then(data => {
+          	console.log(data);
+          })
+  .catch(error => {
+          	console.log(error);
+          });
 ```
 
 ### PUT
@@ -67,17 +73,25 @@ WooCommerceAPI.post('products', {
 WooCommerceAPI.put('orders/123', {
   order: {
     status: 'completed'
-  }
-}, function(err, data) {
-  console.log(res);
-});
+  })
+  .then(data => {
+          	console.log(data);
+          })
+  .catch(error => {
+          	console.log(error);
+          });
 ```
 
 ### DELETE
 
 ```javascript
-WooCommerceAPI.delete('coupons/123', function(err, data) {
-  console.log(res);
+WooCommerceAPI.delete('coupons/123')
+.then(data => {
+          	console.log(data);
+          })
+  .catch(error => {
+          	console.log(error);
+          });
 });
 ```
 
