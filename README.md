@@ -1,4 +1,4 @@
-![GitHub package.json version](https://img.shields.io/github/package-json/v/techneplus/react-native-woocommerce-api.svg)[![Build Status](https://travis-ci.org/JamesUgbanu/react-native-woocommerce-api.svg?branch=master)](https://travis-ci.org/JamesUgbanu/react-native-woocommerce-api)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/techneplus/react-native-woocommerce-api.svg)[![Build Status](https://travis-ci.org/JamesUgbanu/react-native-woocommerce-api.svg?branch=master)] (https://travis-ci.org/JamesUgbanu/react-native-woocommerce-api)
 # react-native-woocommerce-api
 A wrappper that connects react Native to the WooCommerce API
 
@@ -25,7 +25,7 @@ var WooCommerceAPI = new WooCommerceAPI({
   consumerKey: 'ck_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx', // Your consumer secret
   consumerSecret: 'cs_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', // Your consumer secret
   wpAPI: true, // Enable the WP REST API integration
-  version: 'wc/v2', // WooCommerce WP REST API version
+  version: 'wc/v3', // WooCommerce WP REST API version
   queryStringAuth: true
 });
 ```
