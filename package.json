@@ -1,6 +1,6 @@
 {
   "name": "react-native-woocommerce-api",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Connects react Native to the WooCommerce API",
   "main": "lib/react-native-woocommerce-api.js",
   "license": "MIT",
@@ -10,7 +10,9 @@
     "test": "mocha",
     "test-cov": "istanbul cover ./node_modules/.bin/_mocha test.js"
   },
-  "publishConfig": { "registry": "https://npm.pkg.github.com/@jamesugbanu" },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@jamesugbanu"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/jamesugbanu/react-native-woocommerce-api.git"
