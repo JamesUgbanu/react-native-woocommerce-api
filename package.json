@@ -69,12 +69,12 @@
   "author": {
     "name": "james Ugbanu",
     "email": "jamesugbanu@gmail.com",
-    "url": "https://www.facebook.com/cemargo"
+    "url": "https://www.crystalwebpro.com"
   },
   "bugs": {
-    "url": "https://github.com/techneplus/react-native-woocommerce-api/issues"
+    "url": "https://github.com/jamesugbanu/react-native-woocommerce-api/issues"
   },
-  "homepage": "https://github.com/techneplus/react-native-woocommerce-api",
+  "homepage": "https://github.com/jamesugbanu/react-native-woocommerce-api",
   "devDependencies": {
     "chai": "^4.2.0",
     "istanbul": "^0.4.5",
