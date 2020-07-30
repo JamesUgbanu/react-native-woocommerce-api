@@ -11,7 +11,7 @@
     "test-cov": "istanbul cover ./node_modules/.bin/_mocha test.js"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/@jamesugbanu"
+    "registry": "https://npm.pkg.github.com/"
   },
   "repository": {
     "type": "git",
