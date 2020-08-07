@@ -75,14 +75,14 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "istanbul": "^0.4.5",
-    "jshint": "^2.11.0",
-    "mocha": "^7.1.2",
+    "jshint": "^2.12.0",
+    "mocha": "^7.2.0",
     "nock": "^12.0.3"
   },
   "dependencies": {
-    "crypto-js": "^3.1.8",
+    "crypto-js": "^3.3.0",
     "node-fetch": "^2.6.0",
-    "oauth-1.0a": "^2.2.5"
+    "oauth-1.0a": "^2.2.6"
   },
   "_id": "react-native-woocommerce-api@1.0.11",
   "_shasum": "",
