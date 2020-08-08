@@ -1,6 +1,6 @@
 {
   "name": "react-native-woocommerce-api",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "Connects react Native to the WooCommerce API",
   "main": "lib/react-native-woocommerce-api.js",
   "license": "MIT",
