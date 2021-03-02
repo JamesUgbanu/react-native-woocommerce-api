@@ -1,6 +1,6 @@
 import WooCommerceAPI from 'react-native-woocommerce-api';
 
-const WooCommerceAPI = new WooCommerceAPI({
+const Woocommerce = new WooCommerceAPI({
   url: 'https://yourstore.com', // Your store URL
   ssl: true,
   consumerKey: 'ck_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx', // Your consumer secret
@@ -10,7 +10,7 @@ const WooCommerceAPI = new WooCommerceAPI({
   queryStringAuth: true
 });
 
- 	WooCommerceAPI.get('products')
+Woocommerce.get('products')
           .then(data => {
           	console.log(data);
           })
