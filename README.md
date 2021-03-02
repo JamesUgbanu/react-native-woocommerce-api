@@ -20,7 +20,7 @@ Include the 'react-native-woocommerce-api' module within your script and instant
 ```javascript
 import WooCommerceAPI from 'react-native-woocommerce-api';
 
-var WooCommerceAPI = new WooCommerceAPI({
+const WooCommerceAPI = new WooCommerceAPI({
   url: 'https://yourstore.com', // Your store URL
   ssl: true,
   consumerKey: 'ck_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx', // Your consumer secret
@@ -41,6 +41,18 @@ Your WooCommerce API can be called once the WooCommerceAPI object has been insta
 
 ```javascript
 WooCommerceAPI.get('products')
+          .then(data => {
+          	console.log(data);
+          })
+          .catch(error => {
+          	console.log(error);
+          });
+```
+
+### GET WITH PARAMETER
+
+```javascript
+WooCommerceAPI.get('products', { customer: userID, per_page: 100 })
           .then(data => {
           	console.log(data);
           })

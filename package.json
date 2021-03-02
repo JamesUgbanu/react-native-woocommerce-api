@@ -1,7 +1,7 @@
 {
   "name": "react-native-woocommerce-api",
-  "version": "1.8.5",
-  "description": "Connects react Native to the WooCommerce API",
+  "version": "1.8.6",
+  "description": "Connects react Native to WooCommerce API",
   "main": "lib/react-native-woocommerce-api.js",
   "license": "MIT",
   "scripts": {
@@ -98,7 +98,7 @@
   },
   "maintainers": [
     {
-      "name": "james ugbanu",
+      "name": "James Ugbanu",
       "email": "jamesugbanu@gmail.com"
     }
   ],
