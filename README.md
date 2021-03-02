@@ -52,7 +52,7 @@ WooCommerceAPI.get('products')
 ### GET WITH PARAMETER
 
 ```javascript
-WooCommerceAPI.get('products', { customer: userID, per_page: 100 })
+WooCommerceAPI.get('orders', { customer: userID, per_page: 100 })
           .then(data => {
           	console.log(data);
           })
