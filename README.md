@@ -1,4 +1,4 @@
-![GitHub package.json version](https://img.shields.io/github/package-json/v/techneplus/react-native-woocommerce-api.svg) [![Build Status](https://travis-ci.org/JamesUgbanu/react-native-woocommerce-api.svg?branch=master)](https://travis-ci.org/JamesUgbanu/react-native-woocommerce-api)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/techneplus/react-native-woocommerce-api.svg) [![Build Status](https://travis-ci.com/JamesUgbanu/react-native-woocommerce-api.svg?branch=master)](https://travis-ci.org/JamesUgbanu/react-native-woocommerce-api)
 
 # react-native-woocommerce-api
 A wrappper that connects react Native to the WooCommerce API
