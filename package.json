@@ -81,7 +81,7 @@
   },
   "dependencies": {
     "crypto-js": "^3.3.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^3.1.1",
     "oauth-1.0a": "^2.2.6"
   },
   "_id": "react-native-woocommerce-api@1.0.11",
