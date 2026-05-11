@@ -1,117 +1,177 @@
-![GitHub package.json version](https://img.shields.io/github/package-json/v/techneplus/react-native-woocommerce-api.svg) [![Build Status](https://travis-ci.com/JamesUgbanu/react-native-woocommerce-api.svg?branch=master)](https://travis-ci.com/JamesUgbanu/react-native-woocommerce-api)
-
 # react-native-woocommerce-api
-A wrappper that connects react Native to the WooCommerce API
+
+Lightweight WooCommerce REST API client for React Native and JavaScript applications.
 
 ## Installation
 
-To install the module using NPM:
-
-```
-npm install react-native-woocommerce-api --save
+```bash
+npm install react-native-woocommerce-api
 ```
 
-## Setup
+## JavaScript usage
 
-You will need a consumer key and consumer secret to call your store's WooCommerce API. You can find instructions [here](https://docs.woocommerce.com/document/woocommerce-rest-api/)
+### CommonJS
 
-Include the 'react-native-woocommerce-api' module within your script and instantiate it with a config:
+```js
+const WooCommerceAPI = require('react-native-woocommerce-api');
 
-```javascript
-import WooCommerceAPI from 'react-native-woocommerce-api';
-
-const WooCommerceAPI = new WooCommerceAPI({
-  url: 'https://yourstore.com', // Your store URL
-  ssl: true,
-  consumerKey: 'ck_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx', // Your consumer secret
-  consumerSecret: 'cs_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', // Your consumer secret
-  wpAPI: true, // Enable the WP REST API integration
-  version: 'wc/v3', // WooCommerce WP REST API version
-  queryStringAuth: true
+const api = new WooCommerceAPI({
+  url: 'https://yourstore.com',
+  consumerKey: 'ck_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+  consumerSecret: 'cs_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+  wpAPI: true,
+  version: 'wc/v3',
+  queryStringAuth: true,
 });
 ```
 
-**Instantiating a WooCommerceAPI instance without a url, consumerKey or secret will result in an error being thrown**
+### ESM-style import
 
-## Calling the API
+```js
+import WooCommerceAPI from 'react-native-woocommerce-api';
 
-Your WooCommerce API can be called once the WooCommerceAPI object has been instantiated (see above).
-
-### GET
-
-```javascript
-WooCommerceAPI.get('products')
-          .then(data => {
-          	console.log(data);
-          })
-          .catch(error => {
-          	console.log(error);
-          });
+const api = new WooCommerceAPI({
+  url: 'https://yourstore.com',
+  consumerKey: 'ck_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+  consumerSecret: 'cs_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+  wpAPI: true,
+  version: 'wc/v3',
+  queryStringAuth: true,
+});
 ```
 
-### GET WITH PARAMETER
+### Requests
 
-```javascript
-WooCommerceAPI.get('orders', { customer: userID, per_page: 100 })
-          .then(data => {
-          	console.log(data);
-          })
-          .catch(error => {
-          	console.log(error);
-          });
+```js
+api.get('products')
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 ```
 
-### POST
+```js
+api.get('orders', { customer: 123, per_page: 100 })
+  .then((data) => {
+    console.log(data);
+  });
+```
 
-For this example you have a [Order object](http://woocommerce.github.io/woocommerce-rest-api-docs/#create-an-order).
-
-```javascript
-WooCommerceAPI.post('products', {
+```js
+api.post('products', {
   product: {
     title: 'Premium Quality',
     type: 'simple',
-    regular_price: '21.99'
-    }
-  })
-  .then(data => {
-          	console.log(data);
-          })
-  .catch(error => {
-          	console.log(error);
-          });
-```
-
-### PUT
-
-```javascript
-WooCommerceAPI.put('orders/123', {
-  order: {
-    status: 'completed'
-  }
-  })
-  .then(data => {
-          	console.log(data);
-          })
-  .catch(error => {
-          	console.log(error);
-          });
-```
-
-### DELETE
-
-```javascript
-WooCommerceAPI.delete('coupons/123')
-.then(data => {
-          	console.log(data);
-          })
-  .catch(error => {
-          	console.log(error);
-          });
+    regular_price: '21.99',
+  },
 });
 ```
 
-## Testing
+```js
+api.put('orders/123', {
+  order: {
+    status: 'completed',
+  },
+});
+```
 
+```js
+api.delete('coupons/123');
 ```
-npm test
+
+### Returning headers with GET requests
+
+```js
+api.get('orders', { header: true }).then(({ header, data }) => {
+  console.log(header.get('x-wp-total'));
+  console.log(data);
+});
 ```
+
+## TypeScript usage
+
+The package now ships with built-in type declarations.
+
+```ts
+import WooCommerceAPI from 'react-native-woocommerce-api';
+
+type ProductList = {
+  products: Array<{ id: number; name: string }>;
+};
+
+const api = new WooCommerceAPI({
+  url: 'https://yourstore.com',
+  consumerKey: 'ck_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+  consumerSecret: 'cs_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+  wpAPI: true,
+  version: 'wc/v3',
+  queryStringAuth: true,
+});
+
+async function loadProducts(): Promise<void> {
+  const data = await api.get<ProductList>('products');
+  console.log(data.products[0]?.name);
+}
+```
+
+## API notes
+
+- `url`, `consumerKey`, and `consumerSecret` are required.
+- Existing public method names remain unchanged: `get`, `post`, `put`, `delete`, and `options`.
+- CommonJS usage continues to work.
+
+## Development
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Available scripts:
+
+```bash
+npm run build
+npm run test
+npm run test:coverage
+npm run typecheck
+npm run audit
+```
+
+## Release and publishing
+
+Publishing is handled through GitHub Actions.
+
+The npm publish workflow runs only when:
+
+- a GitHub Release is published, or
+- a tag matching `v*` is pushed
+
+Before publish, the workflow will:
+
+1. run `npm ci`
+2. run lint
+3. run type checking
+4. run tests
+5. run the build script
+6. publish to npm with provenance enabled
+
+### GitHub Actions requirements
+
+Add this repository secret before publishing:
+
+- `NPM_TOKEN`: npm automation token with permission to publish the package
+
+No tokens are hardcoded in the repository.
+
+## Security notes
+
+This package has been modernized to reduce dependency risk:
+
+- vulnerable direct dependencies were upgraded
+- legacy lint and coverage tooling with insecure transitive dependencies were removed
+- the lockfile was regenerated against current package metadata
+
+The goal of the update was to improve security without changing the public API surface.
