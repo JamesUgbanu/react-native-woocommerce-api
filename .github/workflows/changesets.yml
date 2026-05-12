@@ -28,9 +28,12 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22.14.0
           registry-url: https://registry.npmjs.org
           cache: npm
+
+      - name: Set up npm for trusted publishing
+        run: npm install --global npm@^11.5.1
 
       - name: Install dependencies
         run: npm ci
@@ -47,13 +50,33 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Create release pull request or publish to npm
+      - name: Create or update release pull request
+        id: changesets
         uses: changesets/action@v1
         with:
           version: npm run version-packages
-          publish: npm run release
-          title: chore: release package
-          commit: chore: release package
+          title: "chore: release package"
+          commit: "chore: release package"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Read package metadata
+        if: steps.changesets.outputs.hasChangesets == 'false'
+        id: package
+        run: |
+          echo "name=$(node -p "require('./package.json').name")" >> "$GITHUB_OUTPUT"
+          echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Check if version is already published
+        if: steps.changesets.outputs.hasChangesets == 'false'
+        id: published
+        run: |
+          if npm view "${{ steps.package.outputs.name }}@${{ steps.package.outputs.version }}" version >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish package with trusted publishing
+        if: steps.changesets.outputs.hasChangesets == 'false' && steps.published.outputs.exists == 'false'
+        run: npm publish --provenance --access public
