@@ -1,138 +1,289 @@
-var WooCommerceAPI = require('./lib/react-native-woocommerce-api.js');
-var chai = require('chai');
+'use strict';
+
+var assert = require('node:assert/strict');
+var Https = require('https');
+var test = require('node:test');
 var nock = require('nock');
 
-var url = '?consumer_key=ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&consumer_secret=cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-describe('#Construct', function() {
-    it('should throw an error if the url, consumerKey or consumerSecret are missing', function() {
-      chai.expect(function() {
-        new WooCommerceAPI();
-      }).to.throw(Error);
-    });
-  
-    it('should set the default options', function() {
-      const api = new WooCommerceAPI({
-        url: 'https://yourstore.dev',
-        consumerKey: 'ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-        consumerSecret: 'cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-        wpAPI: true,
-        version: 'wc/v2',
-        queryStringAuth: true
-      });
-  
-      chai.expect(api.version).to.equal('wc/v2');
-      chai.expect(api.isSsl).to.be.true;
-      chai.expect(api.verifySsl).to.be.true;
-      chai.expect(api.encoding).to.equal('utf8');
-      chai.expect(api.queryStringAuth).to.equal(true);
-    });
+var WooCommerceAPI = require('./lib/react-native-woocommerce-api.js');
+var WooCommerceAPIDefault = require('./lib/react-native-woocommerce-api.js').default;
+
+var authQuery =
+  '?consumer_key=ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&consumer_secret=cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
+
+function createApi() {
+  return new WooCommerceAPI({
+    url: 'https://yourstore.dev',
+    consumerKey: 'ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    consumerSecret: 'cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    wpAPI: true,
+    version: 'wc/v2',
+    queryStringAuth: true,
   });
-  
-  describe('#Requests', function() {
-    beforeEach(function() {
-      nock.cleanAll();
-    });
-  
-    var api = new WooCommerceAPI({
-      url: 'https://yourstore.dev',
-      consumerKey: 'ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-      consumerSecret: 'cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-      wpAPI: true,
-      version: 'wc/v2',
-      queryStringAuth: true
-    });
-  
-    it('should return full API url', function() {
-      var endpoint = 'products';
-      var expected = 'https://yourstore.dev/wp-json/wc/v2/products';
-      var url      = api._getUrl(endpoint);
-  
-      chai.assert.equal(url, expected);
-    });
-  
-    it('should return full WP REST API url with a custom path', function() {
-      var restApi = new WooCommerceAPI({
-        url: 'https://yourstore.dev',
-        consumerKey: 'ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-        consumerSecret: 'cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-        wpAPI: true,
-        wpAPIPrefix: 'wp-rest',
-        version: 'wc/v2',
-        queryStringAuth: true
-      });
-  
-      var endpoint = 'products';
-      var expected = 'https://yourstore.dev/wp-rest/wc/v2/products';
-      var url      = restApi._getUrl(endpoint);
-  
-      chai.assert.equal(url, expected);
-    });
-  
-    it('should return content for basic auth', function(done) {
-      nock('https://yourstore.dev/wp-json/wc/v2')
-      .post('/orders'+url, {}).reply(200, {
-        ok: true
-      });
-      api.post('orders', {})
-      .then(data => {
-          chai.expect(data).be.a.string;
-          done();
-      });
-      //.catch(err => chai.expect(err).to.not.exist)
-    });
-  
-    it('should return content for get requests', function(done) {
-      nock('https://yourstore.dev/wp-json/wc/v2')
-      .get('/orders'+url).reply(200, {
-        ok: true
-      });
-  
-      api.get('orders')
-      .then(data => {
-        chai.expect(data).be.a.string;
-        done();
-    });
-    });
-  
-    it('should return content for put requests', function(done) {
-      nock('https://yourstore.dev/wp-json/wc/v2')
-      .put('/orders'+url, {}).reply(200, {
-        ok: true
-      });
-  
-      api.put('orders', {})
-      .then(data => {
-        chai.expect(data).be.a.string;
-        done();
-    });
-    });
-  
-    it('should return content for delete requests', function(done) {
-      nock('https://yourstore.dev/wp-json/wc/v2')
-      .delete('/orders'+url).reply(200, {
-        ok: true
-      });
-  
-      api.delete('orders')
-      .then(data => {
-        chai.expect(data).be.a.string;
-        done();
-    });
-    });
-  
-    // it('should return content for options requests', function(done) {
-    //   nock('https://yourstore.dev/wp-json/wc/v2')
-    //   .intercept('/orders'+url, 'OPTIONS').reply(400);
-  
-    //   api.options('orders')
-    //   .then(data => {
-    //     chai.expect(data).be.a.string;
-    //     done();
-    // })
-    // .catch(err => {
-    //     console.log(err);
-    //     chai.expect(err).to.not.exist;
-    //     done();
-    // });
-    // });
+}
+
+test('constructor throws when required options are missing', function () {
+  assert.throws(function () {
+    return new WooCommerceAPI();
+  }, /required/);
+});
+
+test('constructor sets default options', function () {
+  var api = createApi();
+
+  assert.equal(api.version, 'wc/v2');
+  assert.equal(api.isSsl, true);
+  assert.equal(api.verifySsl, true);
+  assert.equal(api.encoding, 'utf8');
+  assert.equal(api.queryStringAuth, true);
+});
+
+test('module exposes a default export alias', function () {
+  assert.equal(WooCommerceAPIDefault, WooCommerceAPI);
+});
+
+test('builds the default WooCommerce REST API url', function () {
+  var api = createApi();
+
+  assert.equal(api._getUrl('products'), 'https://yourstore.dev/wp-json/wc/v2/products');
+});
+
+test('builds a custom WordPress REST API prefix', function () {
+  var api = new WooCommerceAPI({
+    url: 'https://yourstore.dev',
+    consumerKey: 'ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    consumerSecret: 'cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    wpAPI: true,
+    wpAPIPrefix: 'wp-rest',
+    version: 'wc/v2',
+    queryStringAuth: true,
   });
+
+  assert.equal(api._getUrl('products'), 'https://yourstore.dev/wp-rest/wc/v2/products');
+});
+
+test('supports the documented wc/v3 wp-json base path', function () {
+  var api = new WooCommerceAPI({
+    url: 'https://yourstore.dev',
+    consumerKey: 'ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    consumerSecret: 'cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    wpAPI: true,
+    version: 'wc/v3',
+  });
+
+  assert.equal(api._getUrl('orders'), 'https://yourstore.dev/wp-json/wc/v3/orders');
+});
+
+test('applies the configured port to the host instead of the path', function () {
+  var api = new WooCommerceAPI({
+    url: 'https://yourstore.dev',
+    consumerKey: 'ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    consumerSecret: 'cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    wpAPI: true,
+    version: 'wc/v3',
+    port: 8443,
+  });
+
+  assert.equal(api._getUrl('orders'), 'https://yourstore.dev:8443/wp-json/wc/v3/orders');
+});
+
+test('encodes query parameters safely for WooCommerce requests', function () {
+  var api = new WooCommerceAPI({
+    url: 'https://yourstore.dev',
+    consumerKey: 'ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    consumerSecret: 'cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    wpAPI: true,
+    version: 'wc/v3',
+    queryStringAuth: true,
+  });
+
+  assert.equal(
+    api._buildRequestUrl(api._getUrl('orders'), [api._serializeQuery({
+      'filter[search]': 'blue & green',
+      page: 2,
+    })]),
+    'https://yourstore.dev/wp-json/wc/v3/orders?filter%5Bsearch%5D=blue%20%26%20green&page=2'
+  );
+});
+
+test('creates an https agent when SSL verification is disabled', function () {
+  var api = new WooCommerceAPI({
+    url: 'https://yourstore.dev',
+    consumerKey: 'ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    consumerSecret: 'cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    wpAPI: true,
+    version: 'wc/v3',
+    verifySsl: false,
+  });
+
+  var agent = api._getAgent();
+
+  assert.ok(agent instanceof Https.Agent);
+  assert.equal(agent.options.rejectUnauthorized, false);
+});
+
+test('returns content for post requests', async function () {
+  var api = createApi();
+
+  nock.cleanAll();
+  nock('https://yourstore.dev/wp-json/wc/v2')
+    .post('/orders' + authQuery, {})
+    .reply(200, { ok: true });
+
+  var data = await api.post('orders', {});
+
+  assert.deepEqual(data, { ok: true });
+});
+
+test('returns content for get requests', async function () {
+  var api = createApi();
+
+  nock.cleanAll();
+  nock('https://yourstore.dev/wp-json/wc/v2')
+    .get('/orders' + authQuery)
+    .reply(200, { ok: true });
+
+  var data = await api.get('orders');
+
+  assert.deepEqual(data, { ok: true });
+});
+
+test('uses basic authentication headers for https stores by default', async function () {
+  var api = new WooCommerceAPI({
+    url: 'https://yourstore.dev',
+    consumerKey: 'ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    consumerSecret: 'cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    wpAPI: true,
+    version: 'wc/v3',
+  });
+
+  nock.cleanAll();
+  nock('https://yourstore.dev', {
+    reqheaders: {
+      authorization: /^Basic /,
+    },
+  })
+    .get('/wp-json/wc/v3/orders')
+    .reply(200, { ok: true });
+
+  var data = await api.get('orders');
+
+  assert.deepEqual(data, { ok: true });
+});
+
+test('optionally returns headers with get requests', async function () {
+  var api = createApi();
+
+  nock.cleanAll();
+  nock('https://yourstore.dev/wp-json/wc/v2')
+    .get('/orders' + authQuery)
+    .reply(200, { ok: true }, { 'x-wp-total': '15' });
+
+  var result = await api.get('orders', { header: true });
+
+  assert.deepEqual(result.data, { ok: true });
+  assert.equal(result.header.get('x-wp-total'), '15');
+});
+
+test('returns content for put requests', async function () {
+  var api = createApi();
+
+  nock.cleanAll();
+  nock('https://yourstore.dev/wp-json/wc/v2')
+    .put('/orders' + authQuery, {})
+    .reply(200, { ok: true });
+
+  var data = await api.put('orders', {});
+
+  assert.deepEqual(data, { ok: true });
+});
+
+test('returns content for delete requests', async function () {
+  var api = createApi();
+
+  nock.cleanAll();
+  nock('https://yourstore.dev/wp-json/wc/v2')
+    .delete('/orders' + authQuery)
+    .reply(200, { ok: true });
+
+  var data = await api.delete('orders');
+
+  assert.deepEqual(data, { ok: true });
+});
+
+test('preserves OAuth 1.0a query signing for http stores', async function () {
+  var api = new WooCommerceAPI({
+    url: 'http://yourstore.dev',
+    consumerKey: 'ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    consumerSecret: 'cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    wpAPI: true,
+    version: 'wc/v3',
+  });
+
+  nock.cleanAll();
+  nock('http://yourstore.dev')
+    .get(function (uri) {
+      return (
+        uri.indexOf('/wp-json/wc/v3/orders?') === 0 &&
+        uri.indexOf('status=completed') !== -1 &&
+        uri.indexOf('oauth_consumer_key=ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX') !== -1 &&
+        uri.indexOf('oauth_signature_method=HMAC-SHA256') !== -1 &&
+        uri.indexOf('oauth_signature=') !== -1
+      );
+    })
+    .reply(200, { ok: true });
+
+  var data = await api.get('orders', { status: 'completed' });
+
+  assert.deepEqual(data, { ok: true });
+});
+
+test('encodes http query parameters before OAuth signing', async function () {
+  var api = new WooCommerceAPI({
+    url: 'http://yourstore.dev',
+    consumerKey: 'ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    consumerSecret: 'cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    wpAPI: true,
+    version: 'wc/v3',
+  });
+
+  nock.cleanAll();
+  nock('http://yourstore.dev')
+    .get(function (uri) {
+      return (
+        uri.indexOf('/wp-json/wc/v3/orders?') === 0 &&
+        uri.indexOf('filter%5Bsearch%5D=blue%20%26%20green') !== -1 &&
+        uri.indexOf('oauth_signature=') !== -1
+      );
+    })
+    .reply(200, { ok: true });
+
+  var data = await api.get('orders', { 'filter[search]': 'blue & green' });
+
+  assert.deepEqual(data, { ok: true });
+});
+
+test('supports http delete requests with OAuth parameters', async function () {
+  var api = new WooCommerceAPI({
+    url: 'http://yourstore.dev',
+    consumerKey: 'ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    consumerSecret: 'cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    wpAPI: true,
+    version: 'wc/v3',
+  });
+
+  nock.cleanAll();
+  nock('http://yourstore.dev')
+    .delete(function (uri) {
+      return (
+        uri.indexOf('/wp-json/wc/v3/orders?') === 0 &&
+        uri.indexOf('oauth_consumer_key=ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX') !== -1 &&
+        uri.indexOf('oauth_signature=') !== -1
+      );
+    })
+    .reply(200, { ok: true });
+
+  var data = await api.delete('orders');
+
+  assert.deepEqual(data, { ok: true });
+});
