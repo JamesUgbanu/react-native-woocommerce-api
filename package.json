@@ -1,6 +1,6 @@
 {
   "name": "react-native-woocommerce-api",
-  "version": "1.8.8",
+  "version": "1.8.9",
   "description": "Connects react Native to WooCommerce API",
   "main": "lib/react-native-woocommerce-api.js",
   "types": "index.d.ts",
