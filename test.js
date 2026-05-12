@@ -1,6 +1,7 @@
 'use strict';
 
 var assert = require('node:assert/strict');
+var Https = require('https');
 var test = require('node:test');
 var nock = require('nock');
 
@@ -71,6 +72,54 @@ test('supports the documented wc/v3 wp-json base path', function () {
   });
 
   assert.equal(api._getUrl('orders'), 'https://yourstore.dev/wp-json/wc/v3/orders');
+});
+
+test('applies the configured port to the host instead of the path', function () {
+  var api = new WooCommerceAPI({
+    url: 'https://yourstore.dev',
+    consumerKey: 'ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    consumerSecret: 'cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    wpAPI: true,
+    version: 'wc/v3',
+    port: 8443,
+  });
+
+  assert.equal(api._getUrl('orders'), 'https://yourstore.dev:8443/wp-json/wc/v3/orders');
+});
+
+test('encodes query parameters safely for WooCommerce requests', function () {
+  var api = new WooCommerceAPI({
+    url: 'https://yourstore.dev',
+    consumerKey: 'ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    consumerSecret: 'cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    wpAPI: true,
+    version: 'wc/v3',
+    queryStringAuth: true,
+  });
+
+  assert.equal(
+    api._buildRequestUrl(api._getUrl('orders'), [api._serializeQuery({
+      'filter[search]': 'blue & green',
+      page: 2,
+    })]),
+    'https://yourstore.dev/wp-json/wc/v3/orders?filter%5Bsearch%5D=blue%20%26%20green&page=2'
+  );
+});
+
+test('creates an https agent when SSL verification is disabled', function () {
+  var api = new WooCommerceAPI({
+    url: 'https://yourstore.dev',
+    consumerKey: 'ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    consumerSecret: 'cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    wpAPI: true,
+    version: 'wc/v3',
+    verifySsl: false,
+  });
+
+  var agent = api._getAgent();
+
+  assert.ok(agent instanceof Https.Agent);
+  assert.equal(agent.options.rejectUnauthorized, false);
 });
 
 test('returns content for post requests', async function () {
@@ -185,6 +234,31 @@ test('preserves OAuth 1.0a query signing for http stores', async function () {
     .reply(200, { ok: true });
 
   var data = await api.get('orders', { status: 'completed' });
+
+  assert.deepEqual(data, { ok: true });
+});
+
+test('encodes http query parameters before OAuth signing', async function () {
+  var api = new WooCommerceAPI({
+    url: 'http://yourstore.dev',
+    consumerKey: 'ck_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    consumerSecret: 'cs_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    wpAPI: true,
+    version: 'wc/v3',
+  });
+
+  nock.cleanAll();
+  nock('http://yourstore.dev')
+    .get(function (uri) {
+      return (
+        uri.indexOf('/wp-json/wc/v3/orders?') === 0 &&
+        uri.indexOf('filter%5Bsearch%5D=blue%20%26%20green') !== -1 &&
+        uri.indexOf('oauth_signature=') !== -1
+      );
+    })
+    .reply(200, { ok: true });
+
+  var data = await api.get('orders', { 'filter[search]': 'blue & green' });
 
   assert.deepEqual(data, { ok: true });
 });
